@@ -1,11 +1,15 @@
 #include <stdio.h>
+void encrypter(char *str, int key);
 int main(){
-    char str[200], code;
-    int i = 0, key = 3;
+    char str[200];
+    int key = 3;
     scanf("%s", str);
-    if(key<7){
+    encrypter(str, key); 
+}
+void encrypter(char *str, int key){ //where stuff actually gets encrypted
+    int i;
         for(i = 0; str[i] != NULL; ++i){
-            code = str[i];
+            char code = str[i];
                 if(code>=97 && code<122){
                     code = code + key;
                     printf("%c",code);
@@ -23,7 +27,4 @@ int main(){
                     printf("%c",code);
                 }     
             }      
-        } else{
-            printf("Change key");
-        }
-}
+        } 
