@@ -1,18 +1,27 @@
 #include <stdio.h>
 void encrypter(char *str, int key);
+FILE *test;
 int main(){
-    char str[200];
-    int key = 0;
-    scanf("%s", str);
-    encrypter(str, key); 
+    char str[200] = {0};
+    int key = 2, i;
+    test = fopen("test.txt", "r");
+    i = 0;
+    while(!feof(test)){ //loop creates string in array str
+        fscanf(test, "%c",&str[i]);
+        i++;    
+    }
+    encrypter(str, key);    //function called to encrypted each character of the string
 }
 void encrypter(char *str, int key){ //where stuff actually gets encrypted
     int i;
-        for(i = 0; str[i] != NULL; ++i){
+        for(i = 0; str[i] != 0; ++i){
             char code = str[i];
-            if(code>=97 && code<=122){
-                code = code - 32;
+            if(code == 32){
+                printf(" ");
             }
+            else if(code>=97 && code<=122){
+                code = code - 32;
+            
                 code = (code + key)%91;
                 if(code>=65)
                     printf("%c",code);
@@ -27,6 +36,8 @@ void encrypter(char *str, int key){ //where stuff actually gets encrypted
 
             }      
         } 
+    }
+
 /*
 #include <stdio.h>
 int main(){
