@@ -10,6 +10,9 @@ void encrypter(char *str, int key){ //where stuff actually gets encrypted
     int i;
         for(i = 0; str[i] != NULL; ++i){
             char code = str[i];
+            if(code>=97 && code<=122){
+                code = code - 32;
+            }
                 code = (code + key)%91;
                 if(code>=65)
                     printf("%c",code);
