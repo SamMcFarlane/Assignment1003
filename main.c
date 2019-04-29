@@ -2,23 +2,56 @@
 #include <string.h>
 void encrypter(char *str, int key);
 void decrypter(char *str); 
-void subencrypter(char *str);
+void subencrypter(char *str, char *substr);
 void subdecrypterknown(char *str, char *substr);
 void subdecrypter(char *str);
 FILE *input, *output;
 int main(){
-    char str[200] = {0}, substr[] = "QWERTYUIOPASDFGHJKLZXCVBNM";
-    int key = 5, i; //Both a negative and positive key works
+    char str[200] = {0}, substr[26];
+    int key, i,ci; //Both a negative and positive key works
     input = fopen("input.txt", "r");
     output = fopen("output.txt","w");
     i = 0;
-    while(!feof(test)){ //loop creates string in array str
-        fscanf(, "%c",&str[i]);
+    while(!feof(input)){ //loop creates string in array str
+        fscanf(input, "%c",&str[i]);
         i++;    
     }
+    printf("Please Select Enter Text into test.txt as Capital Letters and Select Option\n");
+	printf("1) Encryption via Caesar Cipher\n");
+	printf("2) Decryption of Caesar Cipher via Brute Force Attack\n");
+	printf("3) Encryption via Substitution Cipher\n");
+	printf("4) Decryption of Substitution Cipher using known Cipher Text\n");
+	printf("5) Decryption of Substitution Cipher using Character Frequency. At least 50 Characters are need for this.\n");
+	scanf("%d", &ci);
+	switch (ci) {
+	case 1:
+		printf("Enter Key between -26 and 26: \n");
+		scanf("%d", &key);
+		encrypter(str, key);
+		break;
+	case 2:
+		printf("\nScan the Lines of Text to Find the Correct Result. There are 52 Possibilities.");
+		decrypter(str);
+		break;
+	case 3:
+		printf("Enter Custom Cipher Text\n");
+		scanf("%s", substr);
+		subencrypter(str,substr);
+		break;
+	case 4:
+		printf("Enter Cipher Text that Encrypted Message\n");
+		scanf("%s", substr);
+		subdecrypterknown(str, substr);
+		break;
+	case 5:
+		subdecrypter(str);;
+		break;
+	default: printf("Error");
+	} 
+	//*********************FOR TESTING PURPOSES*********************
     //encrypter(str, key); 
     //decrypter(str);//function called to encrypted each character of the string
-    //subencrypter(str);
+    //subencrypter(str,substr);
     //subdecrypterknown(str,substr);
     //subdecrypter(str);
 }
@@ -85,15 +118,14 @@ void decrypter(char *str){
     }
 }
 
-void subencrypter (char *str){
-    char ciphertext[] = "QWERTYUIOPASDFGHJKLZXCVBNM";
+void subencrypter (char *str, char *substr){
     int i;
     for(i=0;str[i] != 0; i++){
         if(str[i] == 32){
             fprintf(output," ");
         }
         else{
-            fprintf(output,"%c", ciphertext[str[i]-65]);
+            fprintf(output,"%c", substr[str[i]-65]);
         }
     }
 }
@@ -128,37 +160,37 @@ void subdecrypter (char *str){ //Unable to get this working well.
         freq = (float)count[i]/(float)(length-spc); //Denominator decreased depending on number of non-letter charcters used
         if(str[i]>=65 && str[i]<=90){ //Letter is printed according to its frequency   
             if(freq>=0.12 && freq<=0.15)
-                printf("E");
+                fprintf(output,"E");
             else if(freq>=0.088 && freq<0.12)
-                printf("T");
+                fprintf(output,"T");
             else if(freq>=0.08 && freq<0.088)
-                printf("A");
+                fprintf(output,"A");
             else if(freq>=0.075 && freq<0.08)
-                printf("O");
+                fprintf(output,"O");
             else if(freq>=0.071 && freq<0.075)
-                printf("I");
+                fprintf(output,"I");
             else if(freq>=0.066 && freq<0.071)
-                printf("N");
+                fprintf(output,"N");
             else if(freq>=0.061 && freq<0.066)
-                printf("S");
+                fprintf(output,"S");
             else if(freq>=0.06 && freq<0.061)
-                printf("R");
+                fprintf(output,"R");
             else if(freq>=0.055 && freq<0.06)
-                printf("H");
+                fprintf(output,"H");
             else if(freq>=0.042 && freq<0.055)
-                printf("D");
+                fprintf(output,"D");
             else if(freq>=0.035 && freq<0.042)
-                printf("L");
+                fprintf(output,"L");
             else if(freq>=0.028 && freq<0.035)
-                printf("U");
+                fprintf(output,"U");
             else if(freq>=0.0265 && freq<0.028)
-                printf("C"); //Point of diminishing returns -- Frequencies too similar it will probably lead to further derangement
+                fprintf(output,"C"); //Point of diminishing returns -- Frequencies too similar it will probably lead to further derangement
             else
-                printf("%c",str[i]);
+                fprintf(output,"%c",str[i]);
             }
         else{
-            printf("%c",str[i]);    
+            fprintf(output,"%c",str[i]);    
         }
-       //printf("%c with freq %f\n",i+65,freq);
+       //printf("%c with freq %f\n",i+65,freq); //TESTING PURPOSES
     }
 }
